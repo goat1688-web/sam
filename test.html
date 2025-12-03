@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>小小性格测试｜你是哪种越懂事越委屈的体质？</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+      background: radial-gradient(circle at top, #fde7c7 0, #fdf7f2 40%, #f5eee7 100%);
+      color: #4b5563;
+    }
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 22px 18px 26px;
+      box-shadow: 0 18px 45px rgba(148, 81, 43, 0.18);
+      border: 1px solid rgba(248, 217, 184, 0.8);
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 6px;
+      text-align: center;
+      color: #374151;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #92400e;
+      margin: 0 auto 16px;
+      justify-content: center;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #f97316;
+    }
+
+    /* 进度条 */
+    .progress-wrap {
+      margin: 8px 0 18px;
+    }
+    .progress-label {
+      font-size: 12px;
+      color: #9ca3af;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #f3f4f6;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg,#fb923c,#f97316,#ea580c);
+      border-radius: 999px;
+      transition: width 0.25s ease-out;
+    }
+
+    .question {
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .question:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .question-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.6;
+      color: #374151;
+    }
+    .question-index {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #92400e;
+      margin-bottom: 4px;
+    }
+    .option {
+      display: block;
+      font-size: 14px;
+      margin: 4px 0;
+      padding: 7px 9px;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.12s, transform 0.06s, box-shadow 0.12s;
+      border: 1px solid transparent;
+    }
+    .option:hover {
+      background: #fffbeb;
+      box-shadow: 0 4px 10px rgba(148, 81, 43, 0.08);
+    }
+    .option input {
+      margin-right: 6px;
+      accent-color: #f97316;
+    }
+
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn {
+      width: 100%;
+      padding: 11px;
+      border-radius: 999px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.06s, box-shadow 0.12s, background 0.12s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg,#fb923c,#f97316);
+      color: #fff7ed;
+      box-shadow: 0 14px 30px rgba(249,115,22,0.45);
+    }
+    .btn-primary:active {
+      transform: scale(0.98);
+      box-shadow: 0 7px 16px rgba(249,115,22,0.45);
+    }
+    .btn-ghost {
+      background: #fffbeb;
+      color: #92400e;
+      box-shadow: none;
+      border: 1px solid #fed7aa;
+    }
+    .btn-ghost:active {
+      transform: scale(0.98);
+    }
+
+    .result {
+      margin-top: 22px;
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: #fffbeb;
+      border: 1px solid #fed7aa;
+      display: none;
+    }
+    .result-tag {
+      font-size: 12px;
+      color: #f97316;
+      margin-bottom: 4px;
+    }
+    .result-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #7c2d12;
+    }
+    .result-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      white-space: pre-line;
+      margin-bottom: 10px;
+      color: #4b5563;
+    }
+    .result-extra {
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+    .result-actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid #fed7aa;
+      background: #fff7ed;
+      cursor: pointer;
+      color: #92400e;
+    }
+    .btn-sm:active {
+      transform: scale(0.97);
+    }
+
+    .tip {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
+    }
+    .footer {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 640px) {
+      h1 { font-size: 24px; }
+      .card { padding: 24px 24px 28px; }
+      .question-title { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <h1>小小性格测试</h1>
+      <div class="subtitle">15 道题，看看你是哪种「越懂事越委屈」的体质</div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        和 Sam 一起升级大脑 · 情绪轻测版
+      </div>
+
+      <!-- 进度条区域 -->
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>作答进度</span>
+          <span id="progressText">0 / 15</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-inner" id="progressInner"></div>
+        </div>
+      </div>
+
+      <!-- 题目区域 -->
+      <form id="quizForm">
+        <!-- Q1 -->
+        <div class="question" data-q="q1">
+          <div class="question-index">Q1</div>
+          <div class="question-title">当你情绪很低落时，别人问你“怎么了”，你通常会？</div>
+          <label class="option">
+            <input type="radio" name="q1" value="A">
+            说“没事”，然后自己找地方消化一下
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="B">
+            简单说一点点，不想让别人担心太久
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="C">
+            开个玩笑带过去，用轻松的方式糊弄过去
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="D">
+            想说，却越想越乱，最后什么也没说出口
+          </label>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question" data-q="q2">
+          <div class="question-index">Q2</div>
+          <div class="question-title">当你情绪积累到顶点时，你会怎么做？</div>
+          <label class="option">
+            <input type="radio" name="q2" value="A">
+            很安静，不说话、不求助，看起来像“没情绪”
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="B">
+            找一个信任的人好好倾诉一次
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="C">
+            拼命转移注意力，大笑、大玩、刷段子
+          </label>
+          <label class="option">
+            <input type="radio" name="q2" value="D">
+            躺着刷手机好几个小时，脑子完全停不下来
+          </label>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question" data-q="q3">
+          <div class="question-index">Q3</div>
+          <div class="question-title">在一段暧昧或亲密关系里，你最常出现的想法是？</div>
+          <label class="option">
+            <input type="radio" name="q3" value="A">
+            别太靠近我，我怕麻烦到你，也怕自己太认真
+          </label>
+          <label class="option">
+            <input type="radio" name="q3" value="B">
+            我们能不能好好说清楚彼此在想什么？
+          </label>
+          <label class="option">
+            <input type="radio" name="q3" value="C">
+            我先装得云淡风轻一点，不能太掉价
+          </label>
+          <label class="option">
+            <input type="radio" name="q3" value="D">
+            他是不是不喜欢我了？为什么感觉变了？
+          </label>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question" data-q="q4">
+          <div class="question-index">Q4</div>
+          <div class="question-title">当别人忽冷忽热时，你会？</div>
+          <label class="option">
+            <input type="radio" name="q4" value="A">
+            迅速抽离，不想再继续投入这段关系
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="B">
+            约出来认真聊一次，看看到底怎么想的
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="C">
+            假装不在意，但心里已经开始写小剧场
+          </label>
+          <label class="option">
+            <input type="radio" name="q4" value="D">
+            情绪完全随对方波动，整个人非常焦虑
+          </label>
+        </div>
+
+        <!-- Q5 -->
+        <div class="question" data-q="q5">
+          <div class="question-index">Q5</div>
+          <div class="question-title">哪句话最像你这几年的人生状态？</div>
+          <label class="option">
+            <input type="radio" name="q5" value="A">
+            我不想麻烦任何人，能自己扛的就自己扛
+          </label>
+          <label class="option">
+            <input type="radio" name="q5" value="B">
+            我把大家都照顾得很好，就是忘了自己
+          </label>
+          <label class="option">
+            <input type="radio" name="q5" value="C">
+            大家以为我没心没肺，其实我敏感得要命
+          </label>
+          <label class="option">
+            <input type="radio" name="q5" value="D">
+            我总在想，我到底哪里做错了
+          </label>
+        </div>
+
+        <!-- Q6 -->
+        <div class="question" data-q="q6">
+          <div class="question-index">Q6</div>
+          <div class="question-title">当你被误解时，你第一反应是？</div>
+          <label class="option">
+            <input type="radio" name="q6" value="A">
+            算了，不解释，不懂就算了
+          </label>
+          <label class="option">
+            <input type="radio" name="q6" value="B">
+            对重要的人会认真解释清楚，其他随缘
+          </label>
+          <label class="option">
+            <input type="radio" name="q6" value="C">
+            怕气氛尴尬，先开个玩笑把话题岔开
+          </label>
+          <label class="option">
+            <input type="radio" name="q6" value="D">
+            当下一言难尽，回家以后越想越难受
+          </label>
+        </div>
+
+        <!-- Q7 -->
+        <div class="question" data-q="q7">
+          <div class="question-index">Q7</div>
+          <div class="question-title">你最怕别人对你做哪件事？</div>
+          <label class="option">
+            <input type="radio" name="q7" value="A">
+            不尊重我的边界，一直追问我的私事
+          </label>
+          <label class="option">
+            <input type="radio" name="q7" value="B">
+            把我的懂事和付出当成理所当然
+          </label>
+          <label class="option">
+            <input type="radio" name="q7" value="C">
+            把我的幽默当成不在乎或不正经
+          </label>
+          <label class="option">
+            <input type="radio" name="q7" value="D">
+            完全无视我的感受，情绪反复拉扯我
+          </label>
+        </div>
+
+        <!-- Q8 -->
+        <div class="question" data-q="q8">
+          <div class="question-index">Q8</div>
+          <div class="question-title">在生活里，你最典型的思维习惯是？</div>
+          <label class="option">
+            <input type="radio" name="q8" value="A">
+            先压住情绪，等自己冷静下来再慢慢处理
+          </label>
+          <label class="option">
+            <input type="radio" name="q8" value="B">
+            想办法让大家都舒服，自己怎样放在后面
+          </label>
+          <label class="option">
+            <input type="radio" name="q8" value="C">
+            把难过用“搞笑”和“没关系”包起来
+          </label>
+          <label class="option">
+            <input type="radio" name="q8" value="D">
+            把所有细节放进脑子里来回反复琢磨
+          </label>
+        </div>
+
+        <!-- Q9 -->
+        <div class="question" data-q="q9">
+          <div class="question-index">Q9</div>
+          <div class="question-title">感到疲惫时，你最想做的是？</div>
+          <label class="option">
+            <input type="radio" name="q9" value="A">
+            消失一会儿，让所有人都安静离我远一点
+          </label>
+          <label class="option">
+            <input type="radio" name="q9" value="B">
+            和熟悉的人喝杯奶茶或散步，聊两句就好
+          </label>
+          <label class="option">
+            <input type="radio" name="q9" value="C">
+            看综艺、刷搞笑视频、吃点好吃的
+          </label>
+          <label class="option">
+            <input type="radio" name="q9" value="D">
+            躺着发呆，什么也不做，但也完全放松不下来
+          </label>
+        </div>
+
+        <!-- Q10 -->
+        <div class="question" data-q="q10">
+          <div class="question-index">Q10</div>
+          <div class="question-title">在一个新环境里，你通常是？</div>
+          <label class="option">
+            <input type="radio" name="q10" value="A">
+            先观察，不主动说话，慢慢再融入
+          </label>
+          <label class="option">
+            <input type="radio" name="q10" value="B">
+            礼貌、温柔，像大家之间的缓冲剂和协调者
+          </label>
+          <label class="option">
+            <input type="radio" name="q10" value="C">
+            氛围担当，很快就能和大家打成一片
+          </label>
+          <label class="option">
+            <input type="radio" name="q10" value="D">
+            表面正常，心里紧绷，随时想找借口离开
+          </label>
+        </div>
+
+        <!-- Q11 -->
+        <div class="question" data-q="q11">
+          <div class="question-index">Q11</div>
+          <div class="question-title">你对“被理解”这件事的感受是？</div>
+          <label class="option">
+            <input type="radio" name="q11" value="A">
+            不强求，我已经习惯靠自己了
+          </label>
+          <label class="option">
+            <input type="radio" name="q11" value="B">
+            重要，但我不会要求所有人都懂我
+          </label>
+          <label class="option">
+            <input type="radio" name="q11" value="C">
+            重要，但就算没人懂，我也能自己整消化
+          </label>
+          <label class="option">
+            <input type="radio" name="q11" value="D">
+            非常重要，不被理解的时候会非常难受
+          </label>
+        </div>
+
+        <!-- Q12 -->
+        <div class="question" data-q="q12">
+          <div class="question-index">Q12</div>
+          <div class="question-title">当你突然得到一天不被打扰的时间，你会？</div>
+          <label class="option">
+            <input type="radio" name="q12" value="A">
+            关机、静音、完全独处一整天
+          </label>
+          <label class="option">
+            <input type="radio" name="q12" value="B">
+            做一些平时没空做的小事，让生活回到节奏里
+          </label>
+          <label class="option">
+            <input type="radio" name="q12" value="C">
+            看剧、追综艺、刷段子，彻底放飞一下
+          </label>
+          <label class="option">
+            <input type="radio" name="q12" value="D">
+            想很多事，越想越停不下来，但又不想动
+          </label>
+        </div>
+
+        <!-- Q13 -->
+        <div class="question" data-q="q13">
+          <div class="question-index">Q13</div>
+          <div class="question-title">关系里让你最无力的瞬间是？</div>
+          <label class="option">
+            <input type="radio" name="q13" value="A">
+            我已经很努力解释自己，对方还是不懂
+          </label>
+          <label class="option">
+            <input type="radio" name="q13" value="B">
+            明明是我在付出，却好像没人真正看到
+          </label>
+          <label class="option">
+            <input type="radio" name="q13" value="C">
+            我讲笑话掩饰情绪，却没人看穿我不开心
+          </label>
+          <label class="option">
+            <input type="radio" name="q13" value="D">
+            我只是问了一句“你是不是不开心”，就被嫌烦
+          </label>
+        </div>
+
+        <!-- Q14 -->
+        <div class="question" data-q="q14">
+          <div class="question-index">Q14</div>
+          <div class="question-title">哪种评价会让你久久不能释怀？</div>
+          <label class="option">
+            <input type="radio" name="q14" value="A">
+            “你太冷了。”
+          </label>
+          <label class="option">
+            <input type="radio" name="q14" value="B">
+            “你太好说话了。”
+          </label>
+          <label class="option">
+            <input type="radio" name="q14" value="C">
+            “你能不能正经一点？”
+          </label>
+          <label class="option">
+            <input type="radio" name="q14" value="D">
+            “你就是想太多。”
+          </label>
+        </div>
+
+        <!-- Q15 -->
+        <div class="question" data-q="q15">
+          <div class="question-index">Q15</div>
+          <div class="question-title">哪句话最像你心里不敢说的那句？</div>
+          <label class="option">
+            <input type="radio" name="q15" value="A">
+            “我也想被理解一次。”
+          </label>
+          <label class="option">
+            <input type="radio" name="q15" value="B">
+            “我也想被人照顾，而不是一直懂事。”
+          </label>
+          <label class="option">
+            <input type="radio" name="q15" value="C">
+            “我希望有人懂，我的快乐有时候只是装的。”
+          </label>
+          <label class="option">
+            <input type="radio" name="q15" value="D">
+            “我也想停止这种反复拉扯。”
+          </label>
+        </div>
+      </form>
+
+      <!-- 按钮区域 -->
+      <div class="actions">
+        <button class="btn btn-primary" id="submitBtn">查看我的测试结果</button>
+        <button class="btn btn-ghost" id="resetBtn" type="button">重测一次</button>
+      </div>
+
+      <!-- 结果区域 -->
+      <div class="result" id="resultBox">
+        <div class="result-tag">你的测试结果</div>
+        <div class="result-title" id="resultTitle"></div>
+        <div class="result-desc" id="resultDesc"></div>
+        <div class="result-extra" id="resultExtra"></div>
+
+        <div class="result-actions">
+          <button class="btn-sm" id="copyBtn" type="button">复制结果文案</button>
+        </div>
+      </div>
+
+      <div class="tip">本测试仅供自我觉察和娱乐参考，不做任何专业心理诊断依据。</div>
+      <div class="footer">
+        如果你觉得这些题有一点点像你，<br />
+        欢迎慢慢来、慢慢看，不用一次长大完。
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const totalQuestions = 15;
+    const progressInner = document.getElementById('progressInner');
+    const progressText = document.getElementById('progressText');
+    const quizForm = document.getElementById('quizForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultBox = document.getElementById('resultBox');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultDesc = document.getElementById('resultDesc');
+    const resultExtra = document.getElementById('resultExtra');
+    const copyBtn = document.getElementById('copyBtn');
+
+    // 四型结果文案
+    const resultMap = {
+      A: {
+        title: "A 型｜安静自我消化型（越安静越敏感）",
+        desc:
+          "你不是不需要别人，你只是习惯把最难的那部分留给自己。\n" +
+          "你总在别人看不见的地方把情绪整理得干干净净，好像什么都能扛，也好像什么都不想说。\n\n" +
+          "但真相是：你并不坚强，你只是太懂事了。\n" +
+          "你觉得开口是一种打扰，所以宁愿熬一晚，也不愿麻烦别人一句。\n" +
+          "外表冷静的人，往往内心比谁都柔软，也比谁都容易受伤。\n\n" +
+          "你值得被听见，也值得被理解。",
+        extra:
+          "你可以从很小的一步开始练习——比如，只对一个你信任的人，多说一句“我其实有点累”。\n" +
+          "世界不会因为一个脆弱的瞬间而看轻你。\n\n" +
+          "如果你觉得这些话刚好说中了你，也想让自己不必总是一个人扛着，\n" +
+          "可以关注我。\n" +
+          "我们一起升级大脑，让你的心慢慢有一点空间。"
+      },
+      B: {
+        title: "B 型｜温柔协调型（大家都喜欢你，但你最累）",
+        desc:
+          "你是那种别人稍微发个信号，你就能立刻察觉的人。\n" +
+          "你很会照顾别人、读空气、打圆场，温柔得不像话。\n" +
+          "但真正心累的地方是：你几乎从不要求别人同样对你。\n\n" +
+          "你不是不会说“不”，你只是怕气氛变僵，怕别人失望，怕冲突撕开你努力维持的平衡。\n" +
+          "所以你总在替别人着想，却很少有人真正替你着想。\n\n" +
+          "请记得：你也值得被优先、被理解、被靠近。",
+        extra:
+          "你的温柔不应该是被消耗的理由，而应该是一种被珍惜的能力。\n" +
+          "从现在起，试着把一点点耐心留给自己。\n\n" +
+          "如果你也习惯照顾所有人，却常常忘了照顾自己，\n" +
+          "愿你能从今天起，多心疼自己一点点。\n" +
+          "关注我吧，我们一起升级大脑，把生活调得更舒服。"
+      },
+      C: {
+        title: "C 型｜搞笑伪装型（越活泼的人越懂孤独）",
+        desc:
+          "你是大家眼里的氛围担当，是让场子亮起来的那个人。\n" +
+          "你讲笑话、接梗、打圆场，看起来永远乐观又轻松。\n" +
+          "可没人知道，你的快乐有时候是情绪最深的那层保护膜。\n\n" +
+          "你越难过，越会装作没事；越心碎，越能笑得很好看。\n" +
+          "不是因为你不需要被理解，而是你怕自己一旦停下来，情绪会倾泻得失控。\n\n" +
+          "你值得在某些人面前卸下伪装，哪怕只是一句“我今天不太行”。",
+        extra:
+          "你不需要一直当开心果，你也能脆弱、能被拥抱、能被理解。\n\n" +
+          "如果你也常常在笑声背后藏着难过，\n" +
+          "想学会在关系里不用那么逞强，\n" +
+          "可以关注我。\n" +
+          "我们一起升级大脑，让真实的你更轻松一点。"
+      },
+      D: {
+        title: "D 型｜敏感拉扯型（爱太深，也太容易受伤）",
+        desc:
+          "你感受力强到惊人。\n" +
+          "别人一句无心的话、一个模糊的态度、一次迟来的回复，都能让你反复想上好几轮。\n" +
+          "你常在靠近与后退之间摇摆：一边渴望被理解，一边又怕自己太在意。\n\n" +
+          "你不是矫情，你只是把关系放得太重，每一步都小心翼翼。\n" +
+          "你渴望被看见，却又害怕自己的期待得不到回应。\n" +
+          "这份敏感让你比别人更懂爱，也比别人更容易受伤。\n\n" +
+          "你需要的不是“不要想太多”，而是一个能让你安全、让你稳定的人。",
+        extra:
+          "在那之前，你可以先学会稳住自己，让情绪有一个出口，而不是循环折磨你。\n\n" +
+          "如果这些话让你感到被理解，也想慢慢摆脱那些反复的情绪拉扯，\n" +
+          "可以关注我。\n" +
+          "我们一起升级大脑，让心里的风暴慢慢变小。"
+      }
+    };
+
+    // 更新进度条
+    function updateProgress() {
+      let answered = 0;
+      for (let i = 1; i <= totalQuestions; i++) {
+        const selected = quizForm.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) answered++;
+      }
+      const percent = Math.round((answered / totalQuestions) * 100);
+      progressInner.style.width = percent + "%";
+      progressText.textContent = answered + " / " + totalQuestions;
+    }
+
+    quizForm.addEventListener('change', updateProgress);
+
+    // 提交查看结果
+    submitBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const scores = { A: 0, B: 0, C: 0, D: 0 };
+
+      for (let i = 1; i <= totalQuestions; i++) {
+        const selected = quizForm.querySelector(`input[name="q${i}"]:checked`);
+        if (!selected) {
+          alert("还有题目没选完哦～\n先把所有题目选完再看结果叭。");
+          return;
+        }
+        scores[selected.value] += 1;
+      }
+
+      let bestType = 'A';
+      let maxScore = -1;
+      for (const key in scores) {
+        if (scores[key] > maxScore) {
+          maxScore = scores[key];
+          bestType = key;
+        }
+      }
+
+      const r = resultMap[bestType];
+      resultTitle.textContent = r.title;
+      resultDesc.textContent = r.desc;
+      resultExtra.textContent = r.extra;
+      resultBox.style.display = 'block';
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // 重置测试
+    resetBtn.addEventListener('click', function() {
+      quizForm.reset();
+      resultBox.style.display = 'none';
+      progressInner.style.width = "0%";
+      progressText.textContent = "0 / " + totalQuestions;
+    });
+
+    // 复制结果
+    copyBtn.addEventListener('click', async function() {
+      if (resultBox.style.display === 'none') {
+        alert("先做完测试，看看结果再复制啦～");
+        return;
+      }
+      const text =
+        "【小小性格测试结果】\n" +
+        resultTitle.textContent + "\n\n" +
+        resultDesc.textContent + "\n\n" +
+        resultExtra.textContent + "\n\n" +
+        "——来自《和 Sam 一起升级大脑》的小测试";
+
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("已复制到剪贴板啦～可以直接发给朋友或贴到朋友圈、小红书。");
+      } catch (err) {
+        alert("当前浏览器不支持一键复制，可以长按选择上面的文字手动复制～");
+      }
+    });
+  </script>
+</body>
+</html>
